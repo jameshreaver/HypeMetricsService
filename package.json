@@ -1,0 +1,19 @@
+{
+  "name": "hype-metrics-service",
+  "version": "0.1.0",
+  "description": "Service which collects Hype Experiment Metrics.",
+  "license": "UNLICENSED",
+  "repository": {
+    "private": true
+  },
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "^4.16.2",
+    "nedb": "^1.8.0"
+  },
+  "scripts": {
+    "start": "node service.js",
+    "docker": "docker build -t hype-metrics-service .",
+    "container": "docker run -p 5500:80 hype-metrics-service"
+  }
+}

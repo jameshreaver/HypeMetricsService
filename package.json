@@ -14,6 +14,6 @@
   "scripts": {
     "start": "node service.js",
     "docker": "docker build -t hype-metrics-service .",
-    "container": "docker run -p 5500:80 hype-metrics-service"
+    "container": "docker run hype-metrics-service"
   }
 }

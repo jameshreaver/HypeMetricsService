@@ -1,6 +1,7 @@
 ### Hype Metrics Service
 Service which collects Hype Experiment Metrics.
-Currently on port `5500`.
+Listening on port `4888` for `GET` requests and
+on port `80` for `POST` requests.
 
 
 ### Instructions

@@ -41,7 +41,7 @@ serverPOST.post('/', (req, res) => {
     "type": req.body["type"],
     "elem": req.body["elem"],
   }).exec(function (err, doc) {
-    var date = new Date(req.body["time"]).toLocaleDateString();
+    var date = new Date(req.body["time"]).toLocaleDateString('en-GB');
     if (doc) {
       var field = "data." + date + "." + req.body["vers-id"];
       db.update(doc, { $inc: { [field]: 1 } }, {}, function () {});

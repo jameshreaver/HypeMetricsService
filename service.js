@@ -24,6 +24,10 @@ var db = new nedb({
   autoload: true
 });
 
+serverGET.get('/', (req, res) => {
+  res.end();
+});
+
 serverGET.get('/:id', (req, res) => {
   db.find({"exp-id":req.params.id}, {_id: 0})
     .exec(function (err, docs) {

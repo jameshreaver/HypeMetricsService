@@ -7,7 +7,9 @@ on port `80` for `POST` requests.
 ### Instructions
 
 To install, execute `npm install`.  
-To run, execute `npm start`.
+To run, execute `npm start`.  
+You might need admin privileges  
+to run on port `80` (use `sudo`).
 
 ### Docker
 To build container, execute `npm run docker`.  

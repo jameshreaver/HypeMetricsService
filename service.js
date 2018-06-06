@@ -94,7 +94,7 @@ function insertMetric(metric) {
   let value = metric["value"];
   let data = (value) ? {
     count : 1,
-    value : (metric["type"] === conversion)
+    value : (metric["type"] === "conversion")
       ? Math.max(value, 1) : value
   } : {
     count : 1

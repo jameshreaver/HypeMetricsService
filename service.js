@@ -63,11 +63,7 @@ function saveMetric(metric) {
     "type": metric["type"],
     "elem": metric["elem"]
   }).exec(function (err, doc) {
-    if (doc) {
-      updateMetric(metric, doc);
-    } else {
-      insertMetric(metric);
-    }
+    updateMetric(metric, doc);
   });
   db.persistence.compactDatafile();
 }
@@ -80,31 +76,16 @@ function updateMetric(metric, doc) {
   let value = metric["value"];
   let update = (value) ? { $inc: {
     [field+".count"]: 1,
-    [field+".value"]: value
+    [field+".value"]: (metric["type"] === "conversion")
+      ? Math.max(value, 1) : value
   }} : {
     $inc: { [field+".count"]: 1 }
   };
-  db.update(doc, update);
-}
-
-function insertMetric(metric) {
-  let vers = metric["vers-id"];
-  let date = new Date(metric["time"])
-    .toLocaleDateString('en-US');
-  let value = metric["value"];
-  let data = (value) ? {
-    count : 1,
-    value : (metric["type"] === "conversion")
-      ? Math.max(value, 1) : value
-  } : {
-    count : 1
-  };
-  db.insert({
+  db.update({
     "exp-id": metric["exp-id"],
     "type": metric["type"],
-    "elem": metric["elem"],
-    "data": {[date]: {[vers]: data}}
-  });
+    "elem": metric["elem"]
+  }, update, { upsert:true });
 }
 
 function saveVisit(metric) {

@@ -11,7 +11,7 @@ const serverPOST = createServer(portPOST);
 const serverGET = createServer(portGET);
 
 const visitTimout = 60; //minutes
-const grace = 1000 * 60 * visitTimout;
+const interval = 1000 * 60 * visitTimout;
 
 function createServer(port) {
   var server = express();
@@ -32,7 +32,7 @@ var vdb = new database({
 });
 
 vdb.loadDatabase(function (err) {
-  setInterval(processVisits, grace);
+  setInterval(processVisits, interval);
 });
 
 serverGET.get('/', (req, res) => {
@@ -74,13 +74,13 @@ function updateMetric(metric, doc) {
   let field = "data." + date +
     "." + metric["vers-id"];
   let value = metric["value"];
-  let update = (value) ? { $inc: {
+  let update = (value === undefined) ? {
+    $inc: { [field+".count"]: 1 }
+  } : { $inc: {
     [field+".count"]: 1,
     [field+".value"]: (metric["type"] === "conversion")
       ? Math.max(value, 1) : value
-  }} : {
-    $inc: { [field+".count"]: 1 }
-  };
+  }};
   db.update({
     "exp-id": metric["exp-id"],
     "type": metric["type"],
@@ -124,7 +124,7 @@ function updateVisit(metric, visit) {
 }
 
 function processVisits() {
-  let past = new Date(Date.now() - grace);
+  console.log("Processing visits");
   vdb.find({}).exec(function(err, visits) {
     visits.forEach(function(visit) {
       processVisit(visit);
